@@ -1,0 +1,80 @@
+﻿@model UpdateBookVm
+@{
+    var isCreate = Model.Id == Guid.Empty;
+    ViewData["Title"] = isCreate ? "Create book" : "Update book";
+}
+<div class="card border-0 rounded-0 shadow">
+    <div class="card-body p-4">
+        <form asp-action="Update" enctype="multipart/form-data">
+            <div class="row g-3">
+                <div class="text-primary fw-bold">Book information</div>
+                @if (isCreate)
+                {
+                    <div class="col-md-6">
+                        <label class="form-label" asp-for="PdfFile"></label>
+                        <input class="form-control" asp-for="PdfFile"/>
+                        <span class="text-danger" asp-validation-for="PdfFile"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" asp-for="ImageFile"></label>
+                        <input class="form-control" asp-for="ImageFile"/>
+                        <span class="text-danger" asp-validation-for="ImageFile"></span>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-md-6">
+                        <label class="form-label" asp-for="NewPdfFile"></label>
+                        <input class="form-control" asp-for="NewPdfFile"/>
+                        <span class="text-danger" asp-validation-for="NewPdfFile"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" asp-for="NewImageFile"></label>
+                        <input class="form-control" asp-for="NewImageFile"/>
+                        <span class="text-danger" asp-validation-for="NewImageFile"></span>
+                    </div>
+                }
+
+                <div class="col-md-12">
+                    <label class="form-label" asp-for="Title"></label>
+                    <input class="form-control" asp-for="Title"/>
+                    <span class="text-danger" asp-validation-for="Title"></span>
+                </div>
+                <div class="col-md-12">
+                    <label class="form-label" asp-for="Author"></label>
+                    <input class="form-control" asp-for="Author"/>
+                    <span class="text-danger" asp-validation-for="Author"></span>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label" asp-for="PublishedYear"></label>
+                    <input class="form-control" asp-for="PublishedYear"/>
+                    <span class="text-danger" asp-validation-for="PublishedYear"></span>
+                </div>
+                <div class="col-md-10">
+                    <label class="form-label" asp-for="PublishedBy"></label>
+                    <input class="form-control" asp-for="PublishedBy"/>
+                    <span class="text-danger" asp-validation-for="PublishedBy"></span>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label" asp-for="CategoryIds"></label>
+                    <select class="form-select" asp-for="CategoryIds">
+                        @foreach (var category in Model.Categories)
+                        {
+                            <option value="@category.Id">@category.Name</option>
+                        }
+                    </select>
+                    <span class="text-danger" asp-validation-for="CategoryIds"></span>
+                </div>
+                <div class="col-md-9">
+                    <label class="form-label" asp-for="Description"></label>
+                    <textarea class="form-control" asp-for="Description" rows="4"></textarea>
+                    <span class="text-danger" asp-validation-for="Description"></span>
+                </div>
+               
+                <div class="col-12">
+                    <button class="btn btn-primary px-5" type="submit">@(isCreate ? "Upload" : "Save")</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

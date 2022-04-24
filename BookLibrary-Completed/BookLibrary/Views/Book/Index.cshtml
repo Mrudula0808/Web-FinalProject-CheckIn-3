@@ -1,0 +1,98 @@
+﻿@model BooksVm
+
+@{
+    ViewData["Title"] = "Book list";
+}
+<div class="card">
+    <div class="card-body">
+        <form asp-action="Index" method="get">
+            <div class="row g-3">
+                <div class="col-lg-4">
+                    <label class="form-label" asp-for="Title"></label>
+                    <input class="form-control" asp-for="Title"/>
+                    <span class="text-danger" asp-validation-for="Title"></span>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label" asp-for="PublishedBy"></label>
+                    <input class="form-control" asp-for="PublishedBy"/>
+                    <span class="text-danger" asp-validation-for="PublishedBy"></span>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <label class="form-label" asp-for="PublishedYear"></label>
+                    <input class="form-control" asp-for="PublishedYear"/>
+                    <span class="text-danger" asp-validation-for="PublishedYear"></span>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <label class="form-label" asp-for="CategoryId"></label>
+                    <select class="form-select" asp-for="CategoryId">
+                        <option value="">All</option>
+                        @foreach (var category in Model.Categories)
+                        {
+                            <option value="@category.Id">@category.Name</option>
+                        }
+                    </select>
+                    <span class="text-danger" asp-validation-for="CategoryId"></span>
+                </div>
+                <div class="col-12">
+                    <button class="btn btn-primary px-4" type="submit"><i class="fas fa-search fa-fw me-2"></i> Search</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+<div class="my-3">
+    <a class="btn btn-outline-primary" asp-action="Create">Upload your new book <i class="fas fa-fw fa-plus"></i> </a>
+</div>
+<div class="card border-0">
+    <div class="card-body p-0">
+        <div class="row g-4">
+            @if (Model.Books.Any())
+            {
+                <div class="text-center fst-italic small">Show total @Model.Books.Count() book(s)</div>
+                foreach (var book in Model.Books)
+                {
+                    <div class="col-lg-4 col-md-6">
+                        <div class="card border-0 shadow rounded-0 h-100">
+                            <div class="card-body">
+                                <div class="text-primary fw-bold">
+                                    <i class="fas fa-book me-2 fa-lg"></i> @book.Title
+                                </div>
+                                <div class="small fst-italic">
+                                    Author(s): <span class="fw-bold text-warning">@book.Author</span>
+                                </div>
+                                <div class="small fst-italic">
+                                    Published by: <span class="fw-bold">@book.PublishedBy</span> in <span class="fw-bold">@book.PublishedYear</span>
+                                </div>
+                                <div>
+                                    @foreach (var category in book.Categories)
+                                    {
+                                        <span class="badge rounded-pill bg-primary bg-opacity-50">@category.Name</span>
+                                    }
+                                </div>
+                                <div class="small my-3">
+                                    <a asp-action="Detail" asp-route-Id="@book.Id" class="btn btn-sm btn-primary">Details</a>
+                                    <a asp-action="Download" asp-route-Id="@book.Id" class="btn btn-sm btn-outline-dark">Download</a>
+                                </div>
+                                <div class="small">
+                                    <span>
+                                        <span class="fw-bold text-info me-3"><i class="fas fa-fw fa-eye me-1"></i> @book.ViewCount</span>
+                                    </span>
+                                    <span>
+                                        <span class="fw-bold text-secondary"> <i class="fas fa-fw fa-download me-1"></i>@book.DownloadCount</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="col-12">
+                    <div class="text-center fst-italic fw-bold">No book found </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
